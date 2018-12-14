@@ -72,7 +72,6 @@ module.exports = {
     },
     testAuth:(req,res)=>{
 
-        console.log('authenticated')
         res.status(200).send({
             status:'ok',
             status_message:'authenticated',

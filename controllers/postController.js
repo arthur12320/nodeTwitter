@@ -52,43 +52,64 @@ module.exports = {
         }
     },
     getOnePost: async(req,res) => {
-        let id = req.params.id;
-        let index = req.params.index;
-        let account = await Account.findById(id);
-        let post = account.posts[index];
-        res.status(200).send({
-            status:'ok',
-            status_message:'post retrived from user',
-            data: post
-        })
+        try{
+            let id = req.params.id;
+            let index = req.params.index;
+            let account = await Account.findById(id);
+            let post = account.posts[index];
+            res.status(200).send({
+                status:'ok',
+                status_message:'post retrived from user',
+                data: post
+            })
+        }catch(err){
+            res.status(500).send({
+                status:'error',
+                status_message:'error retrieving post',
+                data: err
+            })
+        }
     },
     editOnePost: async(req,res) => {
-
-        let newText = req.body.text;
-        let index = req.params.id;
-        console.log(index);
-        let account = req.user;
-        account.posts[index].text = newText;
-        account.markModified('posts');    
-        account.save();
-        
-
-        res.status(200).send({
-            status:'ok',
-            status_message:'post edited',
-            data: account.posts[index]
-        })
+        try{
+            let newText = req.body.text;
+            let index = req.params.id;
+            console.log(index);
+            let account = req.user;
+            account.posts[index].text = newText;
+            account.markModified('posts');    
+            account.save();
+            res.status(200).send({
+                status:'ok',
+                status_message:'post edited',
+                data: account.posts[index]
+            })
+        }catch(err){
+            res.status(500).send({
+                status:'error',
+                status_message:'error editing post',
+                data: err
+            })
+        }
     },
     deleteOnePost: async(req,res) =>{
-        let index = req.params.id;
-        let account = req.user;
-        account.posts.splice(index,1);
-        await account.save();
+        try{
+            let index = req.params.id;
+            let account = req.user;
+            account.posts.splice(index,1);
+            await account.save();
 
-        res.status(200).send({
-            status:'ok',
-            status_message:'post deleted',
-            data: null
-        })
+            res.status(200).send({
+                status:'ok',
+                status_message:'post deleted',
+                data: null
+            })
+        }catch(err){
+            res.status(500).send({
+                status:'error',
+                status_message:'error deleting post',
+                data: err
+            })
+        }
     }
 }
