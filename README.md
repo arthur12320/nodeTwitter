@@ -11,9 +11,9 @@ a basic node API with the basic functionality of twitter including : accounts,po
     JWT_KEY: process.env.JWT_KEY || '<JWT_KEY>'
    }
    ```
-   <PORT> = change this for the default port you want the code to listen ex:3000
-   <MONGO_URI> = change this to the connectiong string from the mongodb you are using
-   <JWT_KEY> = change this for the key you want to use to encrypt the passwords
+   <PORT> = change this for the default port you want the code to listen ex:3000  
+   <MONGO_URI> = change this to the connectiong string from the mongodb you are using  
+   <JWT_KEY> = change this for the key you want to use to encrypt the passwords  
 
 
 => all responses from the api follow the same model:
