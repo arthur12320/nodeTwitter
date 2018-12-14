@@ -10,6 +10,7 @@ const Account = require('./models/accountModel')
 passport.use(new localStrategy(
     async(username,password,done)=>{
         try{
+            
             const account = await Account.findOne({username});
             console.log(account)
             if(!account){
@@ -33,18 +34,15 @@ passport.use(new jwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),
     secretOrKey: config.JWT_KEY
 },async(payload,done)=>{
-    console.log('hello');
     try{
         const account = await Account.findById(payload.sub);
 
         if(!account){
-            console.log('not a account');
             return done(null,false);
         }
-        console.log('passed')
         done(null,account);
     }catch(err){
-        console.log('error')
+       
         done(err,false);
     }
 }))
