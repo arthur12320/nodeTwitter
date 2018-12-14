@@ -2,6 +2,8 @@ const JWT = require('jsonwebtoken');
 
 const Account = require('../models/accountModel');
 const config = require('../config/config');
+const Response = require('../utilites/response.js');
+
 
 signWithAccount = user => {
     return token = JWT.sign({
@@ -26,57 +28,27 @@ module.exports = {
                 await newAccount.save();
 
                 let token = signWithAccount(newAccount);
-                res.status(200).send({
-                    status:'ok',
-                    status_message:'account created',
-                    data: token
-                })
+                Response.responseModel(res,200,'ok','account created',token);
             }else{
-                res.status(500).send({
-                    status:'error',
-                    status_message:'error creating account',
-                    data: null
-                })
+                Response.responseModel(res,500,'error','error creating account',null);
             }
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error creating account',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error creating account',err);
         }
     },
     signIn:(req,res)=>{
         try{
             let token = signWithAccount(req.user);
-
-            res.status(200).send({
-                status:'ok',
-                status_message:'account autenticated',
-                body:token
-            })
+            Response.responseModel(res,200,'ok','account authenticated',token);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error signing in',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error signing in',err);
         }
     },
     getAccount:async(req,res)=>{
-        res.status(200).send({
-            status:'ok',
-            status_message:'user that made the request identified',
-            data: req.user
-        })
+        Response.responseModel(res,200,'ok','user that made the request identified',req.user);
     },
     testAuth:(req,res)=>{
-
-        res.status(200).send({
-            status:'ok',
-            status_message:'authenticated',
-            data:null
-        })
+        Response.responseModel(res,200,'ok','authenticated',null);
     }
 
 }

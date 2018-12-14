@@ -1,0 +1,9 @@
+module.exports={
+    responseModel:(res,code,status,statusmsg,data)=>{
+        res.status(code).send({
+            status,
+            status_message:statusmsg,
+            data
+        })
+    }
+}

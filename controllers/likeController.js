@@ -1,5 +1,7 @@
 
 const Account = require('../models/accountModel');
+const Response = require('../utilites/response');
+
 
 module.exports={
     like: async(req,res) => {
@@ -12,17 +14,9 @@ module.exports={
             post.likes.push(myid);
             account.markModified('posts');    
             account.save();
-            res.status(200).send({
-                status:'ok',
-                status_message:'post liked',
-                data: null
-            })  
+            Response.responseModel(res,200,'ok','post liked',null);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error liking the post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error liking post',err);
         }
     },
     dislike: async(req,res) => {
@@ -39,17 +33,9 @@ module.exports={
             });
             account.markModified('posts');    
             account.save();
-            res.status(200).send({
-                status:'ok',
-                status_message:'post disliked',
-                data: null
-            })
+            Response.responseModel(res,200,'ok','post disliked',null);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error disliking post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error disliking post',err);
         }
     },
 }

@@ -1,6 +1,7 @@
 
 
 const Account = require('../models/accountModel');
+const Response = require('../utilites/response');
 
 testid = async (id) =>{
     let ok = id && id.toString().trim()!==''
@@ -28,26 +29,12 @@ module.exports = {
                 account.following.push(followid);
                 account.markModified('following');    
                 await account.save();
-                res.status(200).send({
-                    status:'ok',
-                    status_message:'following new account',
-                    data:{
-                        following: (account.following.length) -1
-                    }
-                })
+                Response.responseModel(res,200,'ok','following new account',{following: (account.following.length) -1})
             }else{
-                res.status(500).send({
-                    status:'error',
-                    status_message:'invalid account id',
-                    data:null
-                }) 
+                Response.responseModel(res,500,'error','invalid account id',null);
             }
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error following new account',
-                data:null
-            }) 
+            Response.responseModel(res,500,'error','error following new account',err); 
         }
     },
     unfollow:async(req,res)=>{
@@ -70,40 +57,20 @@ module.exports = {
                     }
                 })
                 await followedAccount.save();
-                res.status(200).send({
-                    status:'ok',
-                    status_message:'following cancelled',
-                    body: null
-                })
+                Response.responseModel(res,200,'ok','unfollowed',null);
             }else{
-                res.status(500).send({
-                    status:'error',
-                    status_message:'invalid id',
-                    body: null
-                })
+                Response.responseModel(res,500,'error','invalid id',null);
             }
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error canceling following',
-                body: null
-            })
+            Response.responseModel(res,500,'error','error unfollowing',err);
         }
     },
     getFollowing:(req,res)=>{
         try{
             let account = req.user;
-            res.status(200).send({
-                status:'ok',
-                status_message:'following retrieved',
-                data: account.following
-            })
+            Response.responseModel(res,200,'ok','following retrived',account.following);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error retrieving following',
-                data: null
-            })
+            Response.responseModel(res,500,'error','error retrieving following',err);
         }
     }
 }

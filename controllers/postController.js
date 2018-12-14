@@ -1,5 +1,7 @@
 
 const Account = require('../models/accountModel');
+const Response = require('../utilites/response');
+
 
 postFromReq=(req)=>{
     let text = req.body.text;
@@ -15,22 +17,13 @@ postFromReq=(req)=>{
 module.exports = {
     createNewPost: async (req,res) => {
         try{
-            
             let user = req.user;
             let newPost = postFromReq(req);
             user.posts.push(newPost);
             await user.save();
-            res.status(200).send({
-                status:'ok',
-                status_message:'post created sucessfuly',
-                data: newPost
-            })
+            Response.responseModel(res,200,'ok','post created sucessfuly',newPost);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error creating new post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error creating nee post',err);
         }
     },
     getAllPosts: async(req,res) => {
@@ -38,17 +31,9 @@ module.exports = {
             let id = req.params.id;
             let account = await Account.findById(id);
             let posts = account.posts;
-            res.status(200).send({
-                status:'ok',
-                status_message:'posts retrived from user',
-                data: posts
-            })
+            Response.responseModel(res,200,'ok','posts retrieved from user',posts);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error retrieving posts',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error retrieving posts',err);
         }
     },
     getOnePost: async(req,res) => {
@@ -57,17 +42,9 @@ module.exports = {
             let index = req.params.index;
             let account = await Account.findById(id);
             let post = account.posts[index];
-            res.status(200).send({
-                status:'ok',
-                status_message:'post retrived from user',
-                data: post
-            })
+            Response.responseModel(res,200,'ok','post retrieved from user',post);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error retrieving post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error retrieving posts',err);
         }
     },
     editOnePost: async(req,res) => {
@@ -79,17 +56,9 @@ module.exports = {
             account.posts[index].text = newText;
             account.markModified('posts');    
             account.save();
-            res.status(200).send({
-                status:'ok',
-                status_message:'post edited',
-                data: account.posts[index]
-            })
+            Response.responseModel(res,200,'ok','post edited',account.posts[index]);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error editing post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error editing post',err);
         }
     },
     deleteOnePost: async(req,res) =>{
@@ -98,18 +67,9 @@ module.exports = {
             let account = req.user;
             account.posts.splice(index,1);
             await account.save();
-
-            res.status(200).send({
-                status:'ok',
-                status_message:'post deleted',
-                data: null
-            })
+            Response.responseModel(res,200,'ok','post deleted',null);
         }catch(err){
-            res.status(500).send({
-                status:'error',
-                status_message:'error deleting post',
-                data: err
-            })
+            Response.responseModel(res,500,'error','error deleting post',err);
         }
     }
 }
