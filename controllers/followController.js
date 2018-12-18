@@ -29,7 +29,7 @@ module.exports = {
                 account.following.push(followid);
                 account.markModified('following');    
                 await account.save();
-                Response.responseModel(res,200,'ok','following new account',{following: (account.following.length) +1})
+                Response.responseModel(res,200,'ok','following new account',{following: (account.following.length)})
             }else{
                 Response.responseModel(res,500,'error','invalid account id',null);
             }
